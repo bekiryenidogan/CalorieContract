@@ -11,14 +11,14 @@ It's a simple contract that calculates calories burned on a walk and keeps it on
 ## Deploy
 To Deploy your project you have to login to NEAR Testnet Account, Run codes in Terminal.
 - Run `near login`, and follow the instructions it gives you.
-- Add this code in package.json file under "scripts:" to make easy Build & Deploy  `"deploy": "yarn build:release && near dev-deploy ./build/release/simple.wasm"`
+- Add this code in package.json file under "scripts:" to make easy Build & Deploy  `"deploy": "yarn build:release && near dev-deploy ./build/release/calorie-calculator.wasm"`
 - Set variable dev-id to CONTRACT.`export CONTRACT=dev###-###`
 
 # FUNCTIONS
 ------------------------
 ## createWorkout
         
-       near call $CONTRACT create_workout '{"name":"string","weight":u32,"hour"u32:,"tempo":boolean}' --accountId YOUR_ACCOUNT_ID
+       near call $CONTRACT create_workout '{"name":"string","weight":u32,"hour"u32:,"tempo":boolean,"price":""}' --accountId YOUR_ACCOUNT_ID
     
 ## showWorkouts
  -Listing the workouts that created by createWorkout function. 

@@ -1,35 +1,44 @@
-import { PersistentUnorderedMap, math} from "near-sdk-as";
+import { PersistentUnorderedMap, math, Context, u128} from "near-sdk-as";
+import { AccountId, Money } from "./utils";
+
+
  export const exercises = new PersistentUnorderedMap<u32, walking>("exercises");
+ export const exercisesOwner= new PersistentUnorderedMap<u32, Array<AccountId>>("access")
+
 
  @nearBindgen
  export class walking {
-    id: u32;
-    name: string;
-    weight: u32;
-    hour: u32;
-    tempo : bool;
-
+    
+    id: u32
+    name: string
+    weight: u32
+    hour: u32
+    tempo : bool
+    price: Money
 
    //Constructor for default workout
 
-    constructor (name:string,weight:u32,hour:u32,tempo:bool){
+    constructor (name:string,weight:u32,hour:u32,tempo:bool,price:Money){
         
+ 
         this.id = math.hash32<string>(name);
         this.name=name;
         this.weight= weight;
         this.hour= hour;
         this.tempo= tempo;
-       
+        this.price = price;
+  
     }
 
     //Creating new workout for default constructor
 
-    static createWorkout (name:string,weight:u32,hour:u32,tempo:bool): walking {
-        const workout = new walking(name,weight,hour,tempo);
+    static createWorkout (name:string,weight:u32,hour:u32,tempo:bool,price:Money): walking {
+        this.assert_name(name);
+        assert(Context.attachedDeposit > u128.One,"You need to attach atleast 1 Near !")
+        const workout = new walking(name,weight,hour,tempo,price);
         exercises.set(workout.id,workout);
         return workout;
     }
-
 
     // Listing the workouts that created by createWorkout function. 
     static workoutList(offset:u32, limit:u32): walking[] {
@@ -64,4 +73,12 @@ import { PersistentUnorderedMap, math} from "near-sdk-as";
         exercises.delete(id);
       }
 
+    static assert_name(name:string): void {
+        assert(!exercises.contains(math.hash32<string>(name)),"You cannot take this name. Please take another one")
+      }
+
+    static assert_price(id:u32):void {
+        let exercises=this.findById(id);
+        assert(exercises.price<=Context.attachedDeposit,"Money is not enough")
+      }
  }
