@@ -15,30 +15,30 @@ echo
 echo
 echo
 echo ---------------------------------------------------------
-echo "Step 1: Call 'view' functions on the contract"
+echo "Step 1: Create a Workout"
 echo
 echo "(run this script again to see changes made by this file)"
 echo ---------------------------------------------------------
 echo
 
-near view $CONTRACT helloWorld
+near call $CONTRACT create_workout '{"name":"name","weight":100,"hour":1,"tempo":false,"price":"2"}' --accountId $CONTRACT --amount 1
 
 echo
 echo
-
-near view $CONTRACT read '{"key":"some-key"}'
+            "Show Workouts"
+            near call $CONTRACT showWorkouts '{"offset":0,"limit":9}' --accountId $CONTRACT
 
 echo
 echo
 echo ---------------------------------------------------------
-echo "Step 2: Call 'change' functions on the contract"
+echo "Step 2: Call 'del' functions on the contract"
 echo ---------------------------------------------------------
 echo
 
 # the following line fails with an error because we can't write to storage without signing the message
 # --> FunctionCallError(HostError(ProhibitedInView { method_name: "storage_write" }))
 # near view $CONTRACT write '{"key": "some-key", "value":"some value"}'
-near call $CONTRACT write '{"key": "some-key", "value":"some value"}' --accountId $CONTRACT
+near call $CONTRACT del '{"id":2066015425}' --accountId $CONTRACT
 
 echo
 echo "now run this script again to see changes made by this file"
