@@ -42,3 +42,4 @@ To Deploy your project you have to login to NEAR Testnet Account, Run codes in T
          near call $CONTRACT del '{"id":u32}' --accountId YOUR_ACCOUNT_ID
         
 [PATİKA](https://www.patika.dev/web3/near)
+[LOOM] (https://loom.com/share/a7580317d2b2490dafb5b8a3926eb0ae)
